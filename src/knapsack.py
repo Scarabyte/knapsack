@@ -33,6 +33,8 @@ boxes = [
 
 MAXWEIGHT = 15
 
+population = []
+
 # 2. Solutions; each element in the set (each box in the set of boxes)
 #    randomly either selected or not.
 
@@ -43,7 +45,7 @@ def generatesolutions(boxes):
     (Return a list of len(boxes) populated with either True or False)
     """
     solution = []
-    [solution.append(getrandbits(1)) for x in len(boxes)]
+    [solution.append(getrandbits(1)) for x in range(len(boxes))]
     return solution
 
 # 3. Score; add up the weights of each box selected (i.e. the ones where the
@@ -72,19 +74,43 @@ def getsolutionscoredict(solution, score):
     return {"solution": solution, "score": score}
 
 
-def selectsolutions(solutionspace):
-    """Randomly select two solutions with scores."""
-    return [choice(solutionspace), choice(solutionspace)]
+def buildpopulation(population, solutionscoredict):
+    """Build up the population with generated solutions and their scores."""
+    return population.append(solutionscoredict)
 
 
-def tournament():
+def selectsolutions(population):
+    """Randomly select two solutions with scores from the population."""
+    return [choice(population), choice(population)]
+
+
+def tournament(solution1, solution2):
     """Tournament selection.
 
     The solution with the higher score wins.
     """
+    if solution1["score"] > solution2["score"]:
+        return solution1
+    else:
+        return solution2
+    # There is almost certainly a better way to do this, but I think it works
+
+
+def buildnextgeneration():
+    """Build up the next generation of solutions."""
+    pass
+
+
+def crossover():
+    """Crossover as described in the video."""
+    pass
+
+
+def mutation():
+    """Mutation as described in the video."""
     pass
 
 
 if __name__ == "__main__":
-    solutionspace = []  # Perhaps not a good variable name but whatever.
+    population = []
     pass
