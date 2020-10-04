@@ -96,8 +96,8 @@ def tournament(solution1, solution2):
     # There is almost certainly a better way to do this, but I think it works
 
 
-def buildnextgeneration():
-    """Build up the next generation of solutions."""
+def collectparents():
+    """After we've done two tournaments, we have parents for the next gen."""
     pass
 
 
@@ -108,6 +108,11 @@ def crossover():
 
 def mutation():
     """Mutation as described in the video."""
+    pass
+
+
+def buildnextgeneration():
+    """Build up the next generation of solutions."""
     pass
 
 
