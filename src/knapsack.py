@@ -39,7 +39,7 @@ population = []
 #    randomly either selected or not.
 
 
-def generatesolutions(boxes):
+def generatesolution(boxes):
     """For each element in the boxes, either select it or not.
 
     (Return a list of len(boxes) populated with either True or False)
@@ -96,19 +96,38 @@ def tournament(solution1, solution2):
     # There is almost certainly a better way to do this, but I think it works
 
 
-def collectparents():
+def collectparents(winningsolution):
     """After we've done two tournaments, we have parents for the next gen."""
-    pass
+    parents = []
+    selectedsolutions = selectsolutions(population)
+    parents.append(tournament(selectedsolutions[0],
+                              selectedsolutions[1]))
+    # Wondering if we actually need this...
+    # It's not right as-is, anyway
 
 
-def crossover():
+def crossover(parents):
     """Crossover as described in the video."""
-    pass
+    # Let's say (as a first approximation) that the child has a 50/50 chance
+    # of inheriting a value from either parent.
+    # (Later we could add a crossover rate...)
+    child = []
+    for i in range(len(parents[0])):
+        child.append(choice([parents[0][i],
+                             parents[1][i]]))
+    return child
 
 
-def mutation():
+def mutation(child):
     """Mutation as described in the video."""
-    pass
+    # For each element in the child, there's some probability that
+    # the value could flip from a 0 to a 1 or vice versa.
+    # Let's say (as a first approximation) that there's a 1/8 chance
+    # of a mutation happening.
+    for i in range(len(child)):
+        if getrandbits(3) == 7:
+            child[i] = int(not(child[i]))
+    return child
 
 
 def buildnextgeneration():
@@ -117,5 +136,43 @@ def buildnextgeneration():
 
 
 if __name__ == "__main__":
+    box1 = {
+            "weight": 7,
+            "value": 5}
+
+    box2 = {
+            "weight": 2,
+            "value": 4}
+
+    box3 = {
+            "weight": 1,
+            "value": 7}
+
+    box4 = {
+            "weight": 9,
+            "value": 2}
+
+    boxes = [
+            {"weight": 7, "value": 5},
+            {"weight": 2, "value": 4},
+            {"weight": 1, "value": 7},
+            {"weight": 9, "value": 2}]
+
+    MAXWEIGHT = 15
+
     population = []
-    pass
+
+    parents = []
+
+    for i in range(2):
+        solution = generatesolution(boxes)
+        score = getscore(boxes, solution)
+        solutiondict = getsolutionscoredict(solution, score)
+        population = buildpopulation(population, solutiondict)
+        selectedsolutions = selectsolutions(population)
+        winningsolution = tournament(selectedsolutions[0],
+                                     selectedsolutions[1])
+        parents.append(winningsolution)
+
+    child = crossover(parents)
+    child = mutation(child)
