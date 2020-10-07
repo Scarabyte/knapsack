@@ -23,15 +23,22 @@ class TestGenerateSolution(unittest.TestCase):
     # and I want the function to either select that item or not.
 
     def setUp(self):
-        pass
+        """Generate a solution that we'll use for this set of tests."""
+        self.solution = knapsack.generateSolution(box)
 
     # To start with, the length of the solution should be the same as the
     # number of items in the box, i.e. if I supply a box with 4 items in it,
     # the function should return a list with 4 elements in it to indicate
     # whether each item was selected or not.
     def test_solution_length(self):
-        solution = knapsack.generateSolution(box)
-        self.assertEqual(len(box), len(solution))
+        self.assertEqual(len(box), len(self.solution))
+
+    # Now, the solution should be a list of len(box) boolean values (0 or 1)
+    # to indicate whether or not each item in the box was selected.
+    def test_solution_values(self):
+        allowedValues = [0, 1]
+        print("solution = ", self.solution)
+        [self.assertTrue(item in allowedValues) for item in self.solution]
 
 
 if __name__ == "__main__":
