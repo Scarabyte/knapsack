@@ -76,12 +76,14 @@ def getsolutionscoredict(solution, score):
 
 def buildpopulation(population, solutionscoredict):
     """Build up the population with generated solutions and their scores."""
-    return population.append(solutionscoredict)
+    population.append(solutionscoredict)
+    return population
 
 
 def selectsolutions(population):
     """Randomly select two solutions with scores from the population."""
-    return [choice(population), choice(population)]
+    selectedsolutions = [choice(population), choice(population)]
+    return selectedsolutions
 
 
 def tournament(solution1, solution2):
@@ -112,9 +114,9 @@ def crossover(parents):
     # of inheriting a value from either parent.
     # (Later we could add a crossover rate...)
     child = []
-    for i in range(len(parents[0])):
-        child.append(choice([parents[0][i],
-                             parents[1][i]]))
+    for i in range(len(parents[0]["solution"])):
+        child.append(choice([parents[0]["solution"][i],
+                             parents[1]["solution"][i]]))
     return child
 
 
@@ -176,3 +178,10 @@ if __name__ == "__main__":
 
     child = crossover(parents)
     child = mutation(child)
+    # Wait: child still includes a score. But score could be different now.
+
+    nextgeneration = []
+    nextgeneration.append(child)
+    # nextgeneration is now a new solution.
+    # So if we repeat this whole thing again, we have two new...
+    # (This implementation is not quite what was described in the video...)
