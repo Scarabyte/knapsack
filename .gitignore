@@ -110,6 +110,11 @@ ENV/
 env.bak/
 venv.bak/
 
+# PyDev project settings
+.project
+.pydevproject
+.settings/
+
 # Spyder project settings
 .spyderproject
 .spyproject
