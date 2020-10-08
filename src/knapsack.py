@@ -166,22 +166,24 @@ if __name__ == "__main__":
 
     parents = []
 
-    for i in range(2):
-        solution = generateSolution(box)
-        score = getSolutionScore(box, solution)
-        solutiondict = getsolutionscoredict(solution, score)
-        population = buildpopulation(population, solutiondict)
-        selectedsolutions = selectsolutions(population)
-        winningsolution = tournament(selectedsolutions[0],
-                                     selectedsolutions[1])
-        parents.append(winningsolution)
-
-    child = crossover(parents)
-    child = mutation(child)
-    # Wait: child still includes a score. But score could be different now.
-
     nextgeneration = []
-    nextgeneration.append(child)
-    # nextgeneration is now a new solution.
-    # So if we repeat this whole thing again, we have two new...
-    # (This implementation is not quite what was described in the video...)
+
+    while len(nextgeneration) < 8:
+        for i in range(2):
+            solution = generateSolution(box)
+            score = getSolutionScore(box, solution)
+            solutiondict = getsolutionscoredict(solution, score)
+            population = buildpopulation(population, solutiondict)
+            selectedsolutions = selectsolutions(population)
+            winningsolution = tournament(selectedsolutions[0],
+                                         selectedsolutions[1])
+            parents.append(winningsolution)
+
+        child = crossover(parents)
+        child = mutation(child)
+        # Wait: child still includes a score. But score could be different now.
+
+        nextgeneration.append(child)
+        # nextgeneration is now a new solution.
+        # If we do this whole thing again, we have another new solution.
+        # So then we should use the next generation as the new parents.
