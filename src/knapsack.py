@@ -8,7 +8,7 @@ from random import getrandbits, choice
 # The Knapsack Problem as described in https://youtu.be/MacVqujSXWE
 #
 # Steps:
-# 1. Data; in this case boxes with weights and values
+# 1. Data; in this case items with weights and values
 item1 = {
     "weight": 7,
     "value": 5}
@@ -25,7 +25,7 @@ item4 = {
     "weight": 9,
     "value": 2}
 
-boxes = [
+box = [
     {"weight": 7, "value": 5},
     {"weight": 2, "value": 4},
     {"weight": 1, "value": 7},
@@ -35,17 +35,17 @@ MAXWEIGHT = 15
 
 population = []
 
-# 2. Solutions; each element in the set (each box in the set of boxes)
+# 2. Solutions; each element in the set (each item in the box)
 #    randomly either selected or not.
 
 
-def generateSolution(boxes):
-    """For each element in the boxes, either select it or not.
+def generateSolution(box):
+    """For each item in the box, either select it or not.
 
-    (Return a list of len(boxes) populated with either True or False)
+    (Return a list of len(box) populated with either True or False)
     """
     solution = []
-    [solution.append(getrandbits(1)) for x in range(len(boxes))]
+    [solution.append(getrandbits(1)) for x in range(len(box))]
     return solution
 
 # 3. Score; add up the weights of each box selected (i.e. the ones where the
@@ -53,15 +53,15 @@ def generateSolution(boxes):
 #    values to get the score.
 
 
-def getscore(boxes, solution):
-    """Get the score for each solution."""
+def getSolutionScore(box, solution):
+    """Given the box, get the score for a solution."""
     weightsum = score = 0
     for i in range(len(solution)):
-        weightsum += solution[i] * boxes[i]["weight"]
+        weightsum += solution[i] * box[i]["weight"]
 
     if weightsum <= MAXWEIGHT:
         for i in range(len(solution)):
-            score += solution[i] * boxes[i]["value"]
+            score += solution[i] * box[i]["value"]
 
     return score
 
@@ -154,7 +154,7 @@ if __name__ == "__main__":
         "weight": 9,
         "value": 2}
 
-    boxes = [
+    box = [
         {"weight": 7, "value": 5},
         {"weight": 2, "value": 4},
         {"weight": 1, "value": 7},
@@ -167,8 +167,8 @@ if __name__ == "__main__":
     parents = []
 
     for i in range(2):
-        solution = generateSolution(boxes)
-        score = getscore(boxes, solution)
+        solution = generateSolution(box)
+        score = getSolutionScore(box, solution)
         solutiondict = getsolutionscoredict(solution, score)
         population = buildpopulation(population, solutiondict)
         selectedsolutions = selectsolutions(population)
