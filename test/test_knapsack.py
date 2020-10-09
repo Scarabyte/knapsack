@@ -21,6 +21,12 @@ class Test_generateSolution(unittest.TestCase):
 
     # Notes: I want to supply a box with a certain number of items in it,
     # and I want the function to either select that item or not.
+    # Since each element in the box is either selected or not randomly,
+    # I don't know what the solution will actually look like; it will change
+    # every time. However, I know the form the solution should take.
+    # The solution should have the same number of elements as the box,
+    # and all of its elements should be either 0 or 1 to indicate whether
+    # an element was selected.
 
     # Let's start by generating a solution to use for this set of tests.
     solution = knapsack.generateSolution(box)
@@ -33,6 +39,10 @@ class Test_generateSolution(unittest.TestCase):
     # number of items in the box, i.e. if I supply a box with 4 items in it,
     # the function should return a list with 4 elements in it to indicate
     # whether each item was selected or not.
+    def test_solution_type(self):
+        """The solution should be a list of elements."""
+        self.assertIsInstance(self.solution, list)
+
     def test_solution_length(self):
         """The solution should have the same number of elements as the box."""
         self.assertEqual(len(box), len(self.solution))
@@ -43,6 +53,14 @@ class Test_generateSolution(unittest.TestCase):
         """The solution values should be either 0 or 1."""
         allowedValues = [0, 1]
         [self.assertTrue(item in allowedValues) for item in self.solution]
+
+    # I assume that the input to generateSolution is a list of items.
+    # But what if the input isn't a list?
+    # Some object types have a len() property, others don't.
+    def test_incorrect_input_type(self):
+        """generateSolution should return a meaningful error with bad input."""
+        self.assertRaises(knapsack.InvalidInputError,
+                          knapsack.generateSolution, 3)
 
 
 class Test_getSolutionScore(unittest.TestCase):

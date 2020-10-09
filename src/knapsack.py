@@ -42,10 +42,13 @@ population = []
 def generateSolution(box):
     """For each item in the box, either select it or not.
 
-    (Return a list of len(box) populated with either True or False)
+    (Return a list of len(box) populated with either True or False (0 or 1).)
     """
-    solution = []
-    [solution.append(getrandbits(1)) for x in range(len(box))]
+    if type(box) != list:
+        raise InvalidInputError(
+            "generateSolution must be given a list of items")
+
+    solution = [getrandbits(1) for dummy in range(len(box))]
     return solution
 
 # 3. Score; add up the weights of each box selected (i.e. the ones where the
@@ -65,9 +68,6 @@ def getSolutionScore(box, solution):
 
     return score
 
-# 4. Tournament selection - given two solutions, return the one that has
-#    the higher score. (Randomly select the solutions.)
-
 
 def getsolutionscoredict(solution, score):
     """Create a dictionary with each solution and its corresponding score."""
@@ -85,6 +85,9 @@ def selectsolutions(population):
     selectedsolutions = [choice(population), choice(population)]
     return selectedsolutions
 
+# 4. Tournament selection - given two solutions, return the one that has
+#    the higher score. (Randomly select the solutions.)
+
 
 def tournament(solution1, solution2):
     """Tournament selection.
@@ -97,6 +100,8 @@ def tournament(solution1, solution2):
         return solution2
     # There is almost certainly a better way to do this, but I think it works
 
+# 5. The winners of the tournament are the parents for the next generation.
+
 
 def collectparents(winningsolution):
     """After we've done two tournaments, we have parents for the next gen."""
@@ -106,6 +111,9 @@ def collectparents(winningsolution):
                               selectedsolutions[1]))
     # Wondering if we actually need this...
     # It's not right as-is, anyway
+
+# 6. The children are created by randomly choosing each element from either
+#    one parent or the other. (There are other ways of creating the child.)
 
 
 def crossover(parents):
@@ -118,6 +126,9 @@ def crossover(parents):
         child.append(choice([parents[0]["solution"][i],
                              parents[1]["solution"][i]]))
     return child
+
+# 7. For each element in the child solution, there's some chance that it could
+#    be randomly changed.
 
 
 def mutation(child):
@@ -134,6 +145,10 @@ def mutation(child):
 
 def buildnextgeneration():
     """Build up the next generation of solutions."""
+    pass
+
+
+class InvalidInputError(TypeError):
     pass
 
 
