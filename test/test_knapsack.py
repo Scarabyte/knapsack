@@ -65,8 +65,48 @@ class Test_generateSolution(unittest.TestCase):
 
 class Test_getSolutionScore(unittest.TestCase):
     """Given the box of all items and a solution, calculate the score."""
-    pass
+    # The items should have properties including weight and score.
+    # The box contains all items.
+    # The solution is a binary list that indicates if an item was selected.
+    # For all selected items, add up the total score.
+
+    # Let's start by giving it a known example, and seeing if it calculates
+    # the correct score.
+    # For solution = [1, 0, 0, 1] -> score = 0 because it's over the MAXWEIGHT
+    def test_known_example(self):
+        """Verify that the right score is returned for known solutions."""
+        self.assertEqual(knapsack.getSolutionScore(box, [1, 0, 0, 1]), 0)
+        self.assertEqual(knapsack.getSolutionScore(box, [1, 0, 1, 0]), 12)
+        self.assertEqual(knapsack.getSolutionScore(box, [0, 1, 1, 1]), 13)
+        self.assertEqual(knapsack.getSolutionScore(box, [0, 1, 0, 0]), 4)
+
+    # Now, what if the input is not correct - solution is not a list?
+    def test_solution_not_a_list(self):
+        """If the supplied solution is not a list, raise InvalidInputError"""
+        self.assertRaises(knapsack.InvalidInputError,
+                          knapsack.getSolutionScore, box, 2)
+
+    # What if solution IS a list, but not binary?
+    def test_solution_list_is_not_binary(self):
+        """If the solution is not a binary list, raise InvalidInputError"""
+        self.assertRaises(knapsack.InvalidInputError,
+                          knapsack.getSolutionScore, box, [0, 1, 2, 1])
+
+    # What format do I expect the box to have?
+    # 1. List of items
+    # 2. Each item is a dictionary including a weight and score
+    # (Note: Maybe we'll change this later, but for now that's what we have.)
+    def test_box_is_not_a_list(self):
+        """If the box is not a list of items, raise InvalidInputError"""
+        self.assertRaises(knapsack.InvalidInputError,
+                          knapsack.getSolutionScore, "box", [1, 1, 1, 0])
+
+    def test_items_are_not_dictionaries(self):
+        """Each item in the box should be a dictionary"""
+        badbox = [item1, item2, "Not a dictionary", item4]
+        self.assertRaises(knapsack.InvalidInputError,
+                          knapsack.getSolutionScore, badbox, [1, 1, 0, 1])
 
 
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(verbosity=2)

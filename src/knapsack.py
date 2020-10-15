@@ -58,6 +58,21 @@ def generateSolution(box):
 
 def getSolutionScore(box, solution):
     """Given the box, get the score for a solution."""
+
+    if type(solution) != list:
+        raise InvalidInputError("solution must be a binary list of items")
+
+    for item in solution:
+        if item not in [0, 1]:
+            raise InvalidInputError("solution must be a binary list")
+
+    if type(box) != list:
+        raise InvalidInputError("box must be a list of items")
+
+    for item in box:
+        if type(item) != dict:
+            raise InvalidInputError("Each item must be a dictionary")
+
     weightsum = score = 0
     for i in range(len(solution)):
         weightsum += solution[i] * box[i]["weight"]
