@@ -73,6 +73,15 @@ def getSolutionScore(box, solution):
         if type(item) != dict:
             raise InvalidInputError("Each item must be a dictionary")
 
+#         if not [key in item for key in ["weight", "value"]]:
+#             raise InvalidInputError("Items must have weight and value")
+        for key in item.keys():
+            if key not in ["weight", "value"]:
+                raise InvalidInputError("Item must have weight and value")
+
+            if type(item[key]) != int:
+                raise InvalidInputError("Item weights and values must be ints")
+
     weightsum = score = 0
     for i in range(len(solution)):
         weightsum += solution[i] * box[i]["weight"]

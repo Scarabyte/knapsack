@@ -107,6 +107,20 @@ class Test_getSolutionScore(unittest.TestCase):
         self.assertRaises(knapsack.InvalidInputError,
                           knapsack.getSolutionScore, badbox, [1, 1, 0, 1])
 
+    def test_item_dictionary_contents(self):
+        """The item's dictionary should include a weight and a value"""
+        baditem = {"weight": 3, "somekey": 6}
+        badbox = [item1, baditem, item3, item4]
+        self.assertRaises(knapsack.InvalidInputError,
+                          knapsack.getSolutionScore, badbox, [0, 1, 0, 1])
+
+    def test_item_dictionary_values(self):
+        """The value of each key in the item dictionary should be an int"""
+        baditemvalue = {"weight": "notint", "somekey": 6}
+        badbox = [item1, item2, baditemvalue, item4]
+        self.assertRaises(knapsack.InvalidInputError,
+                          knapsack.getSolutionScore, badbox, [1, 1, 0, 0])
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
